@@ -1,9 +1,24 @@
 # DonateShop
 
-[!WARNING]
-The frontend of this project is relatively basic, as development was primarily focused on backend functionality. A frontend redesign is recommended for long-term or production use.
+> [!WARNING]
+> The frontend of this project is relatively basic, as development was primarily focused on backend functionality. A frontend redesign is recommended for long-term or production use.
 
-DonateShop is a Django-based website for managing donations, user balances, purchases, transactions, and Steam authentication.
+# DonateShop
+
+DonateShop is a universal Django-based web platform for selling digital donations across multiple game servers. It is designed to be game-independent, allowing any server or application to integrate through a simple REST API.
+
+The platform includes:
+
+* Digital donation purchases
+* User balance and transaction history
+* Steam authentication
+* Support for multiple game servers
+* Donation expiration management
+* REST API for retrieving active donations
+* REST API for extending donation durations
+* IP and API key protection for server-to-server communication
+
+Any game server can integrate with DonateShop by using the provided API to verify whether a player owns a donation, retrieve donation details, or manage donation durations without requiring direct access to the website's database.
 
 This project is no longer actively maintained by the original developer. You may use, modify, and continue developing it according to the repository license.
 
