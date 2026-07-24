@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль пользователя | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+  body { background: #0f0f14; color: #eee; }
+  .section-title { text-align:center; font-weight:bold; color:#ff3c3c; margin-bottom:1.5rem; }
+  .profile-header { text-align:center; margin-bottom:2.5rem; }
+  .profile-header img { border:3px solid #ff3c3c; box-shadow:0 0 15px rgba(255,60,60,0.5); }
+  .profile-card, .card-profile { background: rgba(255,255,255,0.05); border:1px solid #333; border-radius:1rem; padding:1.5rem; box-shadow:0 0 10px rgba(0,0,0,0.4); }
+  .donate-card, .transaction-card, .ban-card { background: rgba(255,255,255,0.03); border:1px solid #333; border-radius:0.8rem; padding:1rem; margin-bottom:1rem; transition: transform 0.15s; }
+  .donate-card:hover, .transaction-card:hover, .ban-card:hover { transform: scale(1.02); }
+  .badge { padding:0.3rem 0.6rem; border-radius:0.5rem; font-size:0.9rem; }
+  .badge-success { background:#2ecc71; color:#fff; }
+  .badge-danger { background:#e74c3c; color:#fff; }
+  .badge-warning { background:#f1c40f; color:#000; }
+  .btn-red { background:#e74c3c; color:#fff; border:none; padding:0.5rem 1rem; border-radius:0.6rem; width:100%; font-weight:bold; margin-top:0.5rem; }
+  .btn-red:hover { background:#c0392b; }
+
+  /* Модалка деактивации */
+  @keyframes pop-in { from { transform: scale(0.93); opacity:0.3; } to { transform: scale(1); opacity:1; } }
+  .deactivate-modal-backdrop { position: fixed; z-index:1050; left:0; top:0; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); }
+  .deactivate-modal-window { background:#fff0f0; border-radius:1.2rem; box-shadow:0 0 24px #f44b4b50; min-width:340px; max-width:94vw; padding:1.5rem 1.3rem 1.1rem 1.3rem; border:2px solid #ff5555; animation:pop-in 0.13s cubic-bezier(0.7,1.2,0.5,1.1); }
+  .deactivate-modal-header { display:flex; justify-content:space-between; font-size:1.25rem; margin-bottom:0.7rem; }
+  .deactivate-modal-title { color:#ff2020; font-weight:bold; }
+  .deactivate-modal-close { cursor:pointer; font-size:1.4rem; color:#d66; transition:color 0.2s; }
+  .deactivate-modal-body { color:#c20000; font-size:1.06rem; margin-bottom:1.1rem; }
+  .deactivate-modal-actions { display:flex; justify-content:flex-end; gap:0.6rem; }
+  .input-reason {
+    color: #000 !important;
+    background-color: #fff;
+  }
+</style>
+
+<div class="container py-5">
+
+  <!-- ПРОФИЛЬ -->
+  <div class="profile-header">
+    <img src="{{ player.avatar }}" class="rounded-circle" width="120" height="120" alt="Аватар">
+    <h2 class="mt-3">{{ player.nickname }}</h2>
+    <p class="text-muted">Steam ID: {{ player.user_id }}</p>
+    <p>Баланс: <span class="badge badge-warning">{{ player.balance }} ₽</span></p>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <div class="col-md-6">
+      <div class="profile-card">
+        <h4 class="text-danger fw-bold mb-3">Информация</h4>
+        <p><b>Ник:</b> {{ player.nickname }}</p>
+        <p><b>Steam ID:</b> {{ player.user_id }}</p>
+        <p><b>Баланс:</b> {{ player.balance }} ₽</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="profile-card">
+        <h4 class="text-danger fw-bold mb-3">Настройки</h4>
+
+        <!-- Скрыть/показать в топе донатеров -->
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="hide_me" value="1">
+          <button type="submit" class="btn btn-outline-light w-100 mb-2">
+            {% if not player.is_hidden %}
+              Скрыть с топа донатеров
+            {% else %}
+              Показать в топе донатеров
+            {% endif %}
+          </button>
+        </form>
+
+        <!-- Скрыть ник -->
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="hide_nick" value="1">
+          <button type="submit" class="btn btn-outline-light w-100 mb-2">Скрыть ник</button>
+        </form>
+
+        <!-- Скрыть аватар -->
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="hide_avatar" value="1">
+          <button type="submit" class="btn btn-outline-light w-100 mb-2">Скрыть аватар</button>
+        </form>
+
+        <!-- Изменить Max money -->
+        <form method="POST" class="d-flex gap-2 mt-2">
+          {% csrf_token %}
+          <input type="number" name="max_money_amount" class="form-control" placeholder="Max money">
+          <button type="submit" class="btn btn-outline-light">Сохранить</button>
+        </form>
+
+        <!-- Снять средства -->
+        <form method="POST" class="d-flex gap-2 mt-2">
+          {% csrf_token %}
+          <input type="number" name="charge_amount" class="form-control" placeholder="Снять ₽">
+          <button type="submit" class="btn btn-outline-light">Снять</button>
+        </form>
+
+        <!-- Выдать средства -->
+        <form method="POST" class="d-flex gap-2 mt-2">
+          {% csrf_token %}
+          <input type="number" name="replenishment_amount" class="form-control" placeholder="Выдать ₽">
+          <button type="submit" class="btn btn-outline-light">Выдать</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <h3 class="mt-4 text-light">Донаты</h3>
+  {% if donates %}
+    <div class="row">
+      {% for donate in donates %}
+        {% if not donate.is_hidden %}
+          <div class="col-md-6">
+            <div class="p-3 border rounded bg-gradient text-white">
+              <div class="card-body">
+                <h5 class="card-title text-light">ЛВЛ доната: {{ donate.donate.title }}</h5>
+                <p class="card-text text-light"><strong>Куплено на:</strong> {{ donate.donate.server.name }}</p>
+                <p class="card-text text-light"><strong>Куплено в:</strong> {{ donate.date_purchased }}</p>
+                <p class="card-text text-light"><strong>Работает до:</strong> {{ donate.expires_at }}</p>
+
+                {% if donate.is_active and not donate.is_disabled %}
+                  <span class="badge bg-success">Активно</span>
+                  <br>
+                  <form method="POST" class="deactivate-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="deactivate_donate_id" value="{{ donate.id }}">
+                    <input type="hidden" class="deactivate_donate_reason" name="deactivate_donate_reason" value="No reason">
+                    <button type="button" class="btn btn-outline-light deactivate-btn mt-2 w-100" data-id="{{ donate.id }}">
+                      🚫 Деактивировать
+                    </button>
+                  </form>
+                {% else %}
+                  {% if not donate.is_active and not donate.is_disabled %}
+                    <span class="badge bg-danger">Срок действия прошел</span>
+                    <a href="{% url 'shop_donate_list' donate.server.name %}" class="btn btn-outline-light buy-btn mt-2 w-100">💲Продлить</a>
+                    <form method="POST" class="hide-form">
+                      {% csrf_token %}
+                      <input type="hidden" name="hide_donate_id" value="{{ donate.id }}">
+                      <button type="submit" class="btn btn-outline-light hide-btn mt-2 w-100" data-id="{{ donate.id }}">
+                        ❌ Удалить
+                      </button>
+                    </form>
+                  {% else %}
+                    {% if donate.issuer %}
+                      <span class="badge bg-danger">Приостановлен администратором</span>
+                      {% if donate.note %}
+                        <p>{{ donate.note }}</p>
+                      {% endif %}
+                    {% else %}
+                      <span class="badge bg-danger">Деактивирован</span>
+                    {% endif %}
+
+                    <form method="POST" class="hide-form">
+                      {% csrf_token %}
+                      <input type="hidden" name="hide_donate_id" value="{{ donate.id }}">
+                      <button type="submit" class="btn btn-outline-light hide-btn mt-2 w-100" data-id="{{ donate.id }}">
+                        ❌ Удалить
+                      </button>
+                    </form>
+
+                    <form method="POST" class="restore-form">
+                      {% csrf_token %}
+                      <input type="hidden" name="restore_donate_id" value="{{ donate.id }}">
+                      <button type="submit" class="btn btn-outline-light restore-btn mt-2 w-100" data-id="{{ donate.id }}">
+                        🔄️ Восстановить
+                      </button>
+                    </form>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-center text-light">У вас пока нет донатов.</p>
+  {% endif %}
+
+  <!-- ТРАНЗАКЦИИ -->
+  <h3 class="section-title mt-5">История транзакций</h3>
+  {% if transactions %}
+    {% for transaction in transactions %}
+      <div class="transaction-card">
+        {% if transaction.type == 'replenishment' %}
+          <span class="text-success">+ {{ transaction.amount }} ₽</span>
+        {% else %}
+          <span class="text-danger">- {{ transaction.amount }} ₽</span>
+        {% endif %}
+        <p>{{ transaction.reason }}</p>
+        <small>{{ transaction.created_at|date:"d.m.Y H:i" }}</small>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">Транзакций нет.</p>
+  {% endif %}
+
+  <!-- БАНЫ -->
+  <h3 class="section-title mt-5">История блокировок</h3>
+  {% if bans %}
+    {% for ban in bans %}
+      <div class="ban-card">
+        <h5 class="text-danger fw-bold">{{ ban.server_id }} BAN</h5>
+        <p>{{ ban.reason }}</p>
+        <small>{{ ban.created_at|date:"d.m.Y H:i" }} → {{ ban.expires_at|date:"d.m.Y H:i" }}</small>
+        <br>
+        {% if ban.is_revoked %}
+          <span class="badge badge-success">Ограничение снято.</span>
+        {% elif ban.is_active %}
+          <br>
+            <form method="POST" class="mt-3 deactivate-form">
+                {% csrf_token %}
+                <input type="hidden" name="unban_id" value="{{ ban.id }}">
+                <button type="submit" class="btn-red">🚫 Разбанить</button>
+            </form>
+        {% else %}
+          <span class="badge badge-success">Срок бана истёк</span>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">Блокировок нет.</p>
+  {% endif %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const deactivateButtons = document.querySelectorAll(".deactivate-btn");
+
+    deactivateButtons.forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            const form = btn.closest(".deactivate-form");
+            if (!form) return;
+
+            const reasonInput = form.querySelector(".deactivate_donate_reason");
+
+            const modal = document.createElement("div");
+            modal.className = "deactivate-modal-backdrop";
+            modal.innerHTML = `
+                <div class="deactivate-modal-window">
+                    <div class="deactivate-modal-header">
+                        <span class="deactivate-modal-title">Укажите причину</span>
+                        <span class="deactivate-modal-close" id="modalCloseBtn">&times;</span>
+                    </div>
+
+                    <div class="deactivate-modal-body">
+                        <label>
+                          Причина деактивации:
+                          <input id="deactivateReasonInput"
+                                 type="text"
+                                 placeholder="Введите причину..."
+                                 class="input-reason">
+                        </label>
+                    </div>
+
+                    <div class="deactivate-modal-actions">
+                        <button id="cancelModalBtn" class="btn btn-outline-dark">Отмена</button>
+                        <button id="continueModalBtn" class="btn-red">Подтвердить</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            const close = () => { document.body.removeChild(modal); };
+
+            modal.querySelector("#modalCloseBtn").onclick = close;
+            modal.querySelector("#cancelModalBtn").onclick = close;
+            modal.addEventListener("mousedown", (e) => {
+                if (e.target === modal) close();
+            });
+            window.addEventListener("keydown", function escFunc(e){
+                if (e.key === "Escape") {
+                    close();
+                    window.removeEventListener("keydown", escFunc);
+                }
+            });
+
+            modal.querySelector("#continueModalBtn").onclick = () => {
+                const reason = document.getElementById("deactivateReasonInput").value.trim();
+                reasonInput.value = reason === "" ? "No reason" : reason;
+
+                close();
+                form.submit();
+            };
+        });
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="faq-wrapper">
+
+  <div class="faq-sidebar">
+    <h4 class="faq-sidebar-title">Донаты</h4>
+    <ul class="faq-sidebar-list">
+      <li><a href="{% url 'show_faq' 'replenish' %}" class="{% if active == 'replenish' %}active{% endif %}">Как пополнить баланс</a></li>
+      <li><a href="{% url 'show_faq' 'buy_donate' %}" class="{% if active == 'buy_donate' %}active{% endif %}">Как купить донат</a></li>
+      <li><a href="{% url 'show_faq' 'use_donate' %}" class="{% if active == 'use_donate' %}active{% endif %}">Как использовать донат</a></li>
+    </ul>
+  </div>
+
+  <div class="faq-content">
+    {% block faq_content %}{% endblock %}
+  </div>
+
+</div>
+
+<style>
+.faq-wrapper {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  color: #f0f0f0;
+  height: 80vh;
+}
+
+.faq-sidebar {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #333;
+  border-radius: 1rem;
+  padding: 1rem;
+  color: #ddd;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.faq-sidebar-title {
+  color: #ff5555;
+  margin-bottom: 1rem;
+}
+
+.faq-sidebar-list {
+  list-style: none;
+  padding-left: 0;
+  line-height: 1.8;
+}
+
+.faq-sidebar-list li a {
+  color: #fff;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.faq-sidebar-list li a:hover {
+  color: #ff7777;
+}
+
+.faq-sidebar-list li a.active {
+  color: #ff7777;
+}
+
+.faq-content {
+  flex: 3;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #333;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  color: #fff;
+  overflow-y: auto;
+  max-height: 100%;
+}
+</style>
+
+{% endblock %}

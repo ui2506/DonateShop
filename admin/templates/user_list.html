@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Список игроков | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+    .player-card {
+        display: flex;
+        align-items: center;
+        background: #1e1e2f;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .player-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .player-avatar img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+    }
+
+    .player-info {
+        flex-grow: 1;
+        margin-left: 15px;
+        color: #fff;
+    }
+
+    .player-nickname {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .player-steam, .player-balance {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .copy-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .copy-btn:hover {
+        opacity: 0.7;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Список игроков</h2>
+
+    <div class="row">
+        {% for player in players %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="player-card">
+                    <div class="player-avatar">
+                        <img src="{{ player.avatar }}" alt="Avatar">
+                    </div>
+                    <div class="player-info">
+                        <h5 class="player-nickname">{{ player.nickname }}</h5>
+                        <p class="player-steam">Steam ID: <span id="steam-{{ forloop.counter }}">{{ player.user_id }}</span></p>
+                        <p class="player-balance">Баланс: <strong>{{ player.balance }} ₽</strong></p>
+                    </div>
+                    <a href="{% url 'admin_user_profile' player.user_id|default:'unknown' %}">
+                        ➡️
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">Игроки не найдены</p>
+        {% endfor %}
+    </div>
+
+    <div class="pagination justify-content-center">
+        {% if players.has_previous %}
+            <a href="?page=1" class="btn btn-outline-primary">⏪</a>
+            <a href="?page={{ players.previous_page_number }}" class="btn btn-outline-primary">◀️</a>
+        {% endif %}
+
+        <span class="mx-3">Страница {{ players.number }} из {{ players.paginator.num_pages }}</span>
+
+        {% if players.has_next %}
+            <a href="?page={{ players.next_page_number }}" class="btn btn-outline-primary">▶️</a>
+            <a href="?page={{ players.paginator.num_pages }}" class="btn btn-outline-primary">⏩</a>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'admin_transactions' %}">Все транзакций</a>
+</div>
+{% endblock %}

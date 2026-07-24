@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Главная | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+  .hero { 
+    background: url('{% static "images/image.webp" %}') no-repeat center center / cover; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+  }
+
+  #privileges {
+    background: linear-gradient(to top, #111827 0%, #000000 100%);
+    color: #ffffff;
+  }
+
+  #buy {
+    background: linear-gradient(to top, #111827 0%, #111827 100%);
+    color: #ffffff;
+  }
+
+  .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+    color: #ffffff;
+  }
+
+  .btn-red{
+    color: #ffffff;
+    background-color: #e74c3c;
+  }
+
+  .btn-red:hover{
+    color: #e74c3c;
+    background-color: #ffffff;
+  }
+
+  .btn-outline-light:hover{
+    color: #000000;
+  }
+
+  .big-buy-btn {
+    background-color: #e74c3c;
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: visible;
+    z-index: 1;
+  }
+
+  .big-buy-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px white;
+  }
+
+  .emoji-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .emoji-button {
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .emoji-button.hovered {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px white;
+  }
+
+  .emoji-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .emoji {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 1.5rem;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: transform 0.7s ease, opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .card { 
+    background-color: #111; 
+    border: 1px solid #222; 
+  }
+
+  .card-premium { 
+    border: 1px solid red; 
+  }
+</style>
+
+<section class="hero">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Улучшии свой игровой опыт в <br> SCP:SL</h1>
+    <p class="lead">Получи доступ к эксклюзивным возможностям и стань особенным игроком на нашем сервере</p>
+    <div class="mt-4">
+      <a href="#privileges" class="btn btn-red me-2">Смотреть донаты</a>
+    </div>
+  </div>
+</section>
+
+<section id="privileges" class="py-5">
+  <div class="container text-center">
+    <h2 class="mb-5 fw-bold">Доступные донаты</h2>
+    <div class="row justify-content-center g-4">
+      {% for donate in donates %}
+        <div class="col-md-4">
+          <div class="card p-4 h-100 {% if forloop.counter == 2 %} position-relative card-premium {% endif %}">
+            {% if forloop.counter == 2 %}
+              <span class="badge badge-custom">Популярный выбор</span>
+            {% endif %}
+
+            <h4>{{ donate.title }}</h4>
+
+            {% for day, price in donate.price.items %}
+              {% if forloop.first %}
+                <h2>{{ price }}₽ <small class="fs-6">/ {{ day }} дней</small></h2>
+              {% endif %}
+            {% endfor %}
+
+            <ul class="list-unstyled text-start mt-3">
+              {{ donate.description|safe }}
+            </ul>
+            <a href="#buy" class="btn btn-red mt-3 mt-auto">Купить донат</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="buy" class="py-5 text-center">
+  <h1 class="display-4 fw-bold">Купить привилегию</h1>
+
+  <p class="lead text-white mb-4">
+    Купите привилегию, чтобы поддержать наш проект. Благодаря вам наши сервера продолжают работать!
+  </p>
+
+  <div class="emoji-wrapper">
+    <a class="emoji-button" id="emoji-button" style="background-color: var(--red-color);" href="{% url 'shop_server_list' %}">
+      Все донаты
+    </a>
+    
+    <div class="emoji-container">
+      <span class="emoji">🔥</span>
+      <span class="emoji">😎</span>
+      <span class="emoji">💸</span>
+      <span class="emoji">🎉</span>
+      <span class="emoji">🚀</span>
+      <span class="emoji">👑</span>
+      <span class="emoji">💥</span>
+    </div>
+  </div>
+</section>
+
+<section id="statistics" class="py-5" style="background: linear-gradient(to top, #000000, #111827);">
+  <div class="container text-center text-white">
+    <h2 class="mb-5 fw-bold display-5">📊 Статистика</h2>
+    <div class="row justify-content-center g-4">
+
+      <div class="col-md-4">
+        <div class="card bg-dark text-white shadow-lg border border-danger h-100 p-3 rounded-4">
+          <div class="card-body">
+            <h4 class="card-title text-danger mb-4"><i class="fas fa-crown me-2"></i>Богатые игроки</h4>
+            <ul class="list-unstyled">
+              {% for user in rich_users|dictsortreversed:"max_money" %}
+              <li class="d-flex align-items-center mb-3">
+                <span class="me-3 fs-5" style="min-width: 30px;">
+                  {% if forloop.counter == 1 %}🏆{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}#{{ forloop.counter }}{% endif %}
+                </span>
+                <img src="{{ user.avatar }}" class="rounded-circle border border-danger me-3" width="40" height="40" alt="{{ user.nickname }}">
+                <div class="flex-grow-1">
+                  <div class="fw-semibold">{{ user.nickname }}</div>
+                </div>
+                <div class="text-warning fw-bold">{{ user.max_money }} ₽</div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card bg-dark text-white shadow-lg border border-danger h-100 p-3 rounded-4">
+          <div class="card-body">
+            <h4 class="card-title text-danger mb-4"><i class="fas fa-wallet me-2"></i>Топ по ЛВЛ</h4>
+            <ul class="list-unstyled">
+              {% for lvl in top_players %}
+              <li class="d-flex align-items-center mb-3">
+                <span class="me-3 text-muted" style="min-width: 30px;">#{{ forloop.counter }}</span>
+                <div class="flex-grow-1">
+                  <div class="fw-semibold">{{ lvl.nickname }}</div>
+                </div>
+                <div class="text-success fw-bold">{{ lvl.lvl }} LVL</div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card bg-dark text-white shadow-lg border border-danger h-100 p-3 rounded-4">
+          <div class="card-body">
+            <h4 class="card-title text-danger mb-4"><i class="fas fa-wallet me-2"></i>Топ по времени</h4>
+            <ul class="list-unstyled">
+              {% for time in top_time %}
+              <li class="d-flex align-items-center mb-3">
+                <span class="me-3 text-muted" style="min-width: 30px;">#{{ forloop.counter }}</span>
+                <div class="flex-grow-1">
+                  <div class="fw-semibold">{{ time.nickname }}</div>
+                </div>
+                <div class="text-success fw-bold">{{ time.total_seconds|seconds_to_hours }} часов</div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const button = document.getElementById('emoji-button');
+    const container = document.querySelector('.emoji-container');
+
+    const getEmojis = () => [...container.querySelectorAll('.emoji')];
+
+    button.addEventListener('mouseenter', () => {
+      button.classList.add('hovered');
+
+      const emojis = getEmojis();
+
+      emojis.forEach((emoji) => {
+        const angle = Math.random() * 2 * Math.PI;
+        const radius = 100 + Math.random() * 50;
+
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+
+        emoji.style.opacity = '1';
+        emoji.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
+      });
+    });
+
+    button.addEventListener('mouseleave', () => {
+      button.classList.remove('hovered');
+      getEmojis().forEach((emoji) => {
+        emoji.style.transform = `translate(-50%, -50%)`;
+        emoji.style.opacity = '0';
+      });
+    });
+  });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Выдача доната | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+  body { 
+    background:#0f0f14; 
+    color:#eee; 
+  }
+
+  .section-title { 
+    text-align:center; 
+    font-weight:bold; 
+    color:#ff3c3c; 
+    margin-bottom:1.5rem; 
+  }
+  
+  .form-card { 
+    background:rgba(255,255,255,0.05); 
+    border:1px solid #333; 
+    border-radius:1rem; 
+    padding:2rem; 
+    box-shadow:0 0 10px rgba(0,0,0,0.4); 
+  }
+
+  .form-label { 
+    font-weight:bold; 
+    margin-bottom:0.3rem; 
+    display:block; 
+  }
+
+  .form-control, .form-select { 
+    background:#1a1a20; 
+    color:#eee; 
+    border:1px solid #444; 
+    border-radius:0.5rem; 
+    padding:0.6rem; 
+    width:100%; 
+  }
+
+  .form-control:focus, .form-select:focus { 
+    outline:none; 
+    border-color:#ff3c3c; 
+    box-shadow:0 0 6px rgba(255,60,60,0.6); 
+  }
+
+  .btn-red { 
+    background:#e74c3c; 
+    color:#fff; 
+    border:none; 
+    padding:0.7rem 1.2rem; 
+    border-radius:0.6rem; 
+    font-weight:bold; 
+  }
+
+  .btn-red:hover { 
+    background:#c0392b;
+  }
+</style>
+
+<div class="container py-5">
+  <h3 class="section-title">Выдача подарка</h3>
+
+  <div class="form-card">
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="donateSelect" class="form-label">Выберите донат</label>
+        <select id="donateSelect" name="donate_id" class="form-select" required>
+          <option value="" disabled selected>-- Выберите донат --</option>
+          {% for donate in donates %}
+            <option value="{{ donate.id }}">{{ donate.name }} ({{ donate.server.name }})</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="playerIdInput" class="form-label">ID игрока (SteamID)</label>
+        <input type="text" id="playerIdInput" name="player_id" class="form-control" placeholder="Например: 7656119..." required>
+      </div>
+
+      <div class="mb-3 row">
+          <label for="timeValue" class="form-label">Срок действия</label>
+          <input type="number" id="timeValue" name="days" class="form-control" min="1" placeholder="количество дней" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="commentInput" class="form-label">Комментарий</label>
+        <input type="text" id="commentInput" name="comment" class="form-control" placeholder="Подарочееек :3" required>
+      </div>
+
+      <div class="mt-4 text-center">
+        <button type="submit" class="btn-red">✅ Выдать донат</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

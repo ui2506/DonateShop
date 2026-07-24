@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Успешно | Pranik{% endblock %}
+
+{% block content %}
+<div class="p-4 rounded shadow-sm text-white">
+    <h2 class="mb-4 text-center fw-bold">Успешно</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="p-3 border rounded bg-gradient text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Спасибо что задонатил</h5>
+                    <p>Именно благодаря вашей поддержке и помощи других донаторов мы можем продолжать свою работу.</p>
+                    <img src="{% static 'images/cat_flower.webp' %}" class="" width="150" height="150">
+                    <a class="btn btn-success fw-bold d-block mt-3" href="{% url 'home' %}">Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

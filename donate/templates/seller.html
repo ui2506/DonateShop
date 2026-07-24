@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Контакты | Pranik{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="text-white p-4 rounded-4 shadow-sm text-center ">
+    <h4 class="fw-bold">Сселер</h4>
+    <div class="reseller-icons">
+        <img src="{% static 'images/mir.svg' %}" alt="Mir">
+        <img src="{% static 'images/visa.svg' %}" alt="Visa">
+        <img src="{% static 'images/yoomoney.svg' %}" alt="YooMoney">
+        <img src="{% static 'images/kaspi.svg' %}" alt="Kaspi">
+        <img src="{% static 'images/halyk.svg' %}" alt="Halyk">
+    </div>
+</div>
+
+<h2 class="text-center text-light">Ссылки:</h2>
+
+<div class="d-flex justify-content-center gap-3 my-3">
+    <a href="https://discord.gg/PXvvtx4AYe" target="_blank" class="social-btn box" id="discord">
+        <img src="{% static 'images/discord.webp' %}" width="24" class="me-2"> Discord
+    </a>
+    <a href="https://t.me/ui_2506" target="_blank" class="social-btn box" id="telegram">
+        <img src="{% static 'images/telegram.webp' %}" width="24" class="me-2"> Telegram
+    </a>
+</div>
+
+<h2 class="text-center text-light">Контакты:</h2>
+
+<div class="container">
+    <div class="server-box box">
+        <span class="server-name">Discord</span> 
+        <span class="server-ip" id="server-ar discord">ui_2506</span>
+        <button class="copy-btn" data-clipboard-target="#server-ar">
+            <img src="{% static 'images/copy.webp' %}" width="24">
+        </button>
+    </div>
+
+    <div class="server-box box">
+        <span class="server-name">Telegram</span> 
+        <span class="server-ip" id="server-nr">t.me/ui_2506</span>
+        <button class="copy-btn" data-clipboard-target="#server-nr">
+            <img src="{% static 'images/copy.webp' %}" width="24">
+        </button>
+    </div>
+</div>
+
+<style>
+    .reseller-icons img {
+        width: 40px;
+        margin: 5px;
+        filter: brightness(1.2);
+    }
+
+    .reseller-box {
+        text-align: center;
+    }
+
+    .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 150px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        text-decoration: none;
+        color: white;
+        border: 2px solid white;
+        background-color: #333;
+        transition: 0.3s;
+    }
+
+    .social-btn:hover {
+        background-color: #444;
+    }
+
+    .box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .box{
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .server-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 2px solid #888;
+        border-radius: 8px;
+    }
+
+    .server-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .server-name {
+        font-weight: bold;
+        color: #bbb;
+    }
+
+    .server-ip {
+        font-family: monospace;
+        color: #888;
+    }
+
+    .copy-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .copy-btn:hover {
+        transform: scale(1.1);
+    }
+
+    #discord:hover{
+        background-color: #5865F2;
+    }
+
+    #telegram:hover{
+        background-color: #0088cc;
+    }
+</style>
+
+{% endblock %}

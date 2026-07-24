@@ -1,0 +1,250 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Pranik{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    :root{
+      --red-color: #e74c3c;
+      --green-color: #2ecc71;
+      --orange-color: #f39c12;
+    }
+
+    * { 
+      color: #fff; 
+    }
+
+    body {
+      background: linear-gradient(to top, #000000, #111827);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 50px;
+    }
+
+    .btn-red { 
+      background-color: #e74c3c; 
+      color: #fff; 
+    }
+
+    .btn-outline-light:hover { 
+      background-color: #ffffff; 
+      color: #000000; 
+    }
+
+    footer { 
+      background-color: #000; 
+      padding: 40px 0; 
+    }
+
+    .footer-title { 
+      font-weight: bold; 
+      font-size: 1.2rem; 
+    }
+
+    .badge-custom { 
+      background-color: var(--red-color); 
+      position: absolute; 
+      top: -10px; 
+      right: -10px; 
+    }
+
+    a { 
+      text-decoration: none; 
+    }
+
+    .navbar-scrolled {
+      background-color: rgba(0, 0, 0, 0.7) !important;
+      transition: background-color 0.3s ease;
+      border-bottom: 2px solid white;
+    }
+
+    .navbar-none-scrolled {
+      background-color: rgba(0, 0, 0, 1) !important;
+      transition: background-color 0.3s ease;
+      border-bottom: none;
+    }
+
+  #messages-container {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .message-alert {
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    animation: fadeInOut 5s forwards;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    10%, 90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  .alert-success {
+    background-color: var(--green-color);
+    color: white;
+  }
+
+  .alert-error,
+  .alert-danger {
+    background-color: var(--red-color);
+    color: white;
+  }
+
+  .alert-warning {
+    background-color: var(--orange-color);
+    color: white;
+  }
+
+  .alert-info {
+    background-color: #3498db;
+    color: white;
+  }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black fixed-top px-4 navbar-none-scrolled">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{% url 'home' %}">Pranik</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a href="{% url 'shop_server_list' %}" class="nav-link text-white">Привилегии</a></li>
+        <li class="nav-item"><a href="{% url 'server_list' %}" class="nav-link text-white">Наши сервера</a></li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item me-2">
+            <a class="btn btn-outline-light" href="{% url 'balance' %}">
+              💰 {{ user.balance|multiply:1 }} ₽ ≈ {{ user.balance|rub_to_kz }} ₸
+            </a>
+          </li>
+
+          {% if user.is_superuser %}
+            <li class="nav-item me-2">
+              <a class="btn btn-outline-light" href="{% url 'admin_user_list' %}">Админка</a>
+            </li>
+          {% endif %}
+
+          <li class="nav-item">
+            {% if url == 'profile' %}
+              <a class="btn btn-logout" href="{% url 'logout' %}" style="background-color: red; color: #ffffff;">Выйти</a>
+            {% else %}
+              <a class="btn btn-outline-light" href="{% url 'profile' %}">
+                <img src="{{ user.avatar }}" class="rounded-circle border border-light me-1" width="21" height="21"> {{ user.nickname }}
+              </a>
+            {% endif %}
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a href="{% url 'login' %}" class="btn btn-outline-danger">Войти через Steam</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if messages %}
+  <div id="messages-container">
+    {% for message in messages %}
+      <div class="message-alert alert alert-{{ message.tags }} shadow">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<footer class="text-light mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5 class="footer-title">О нас</h5>
+        <p>Наши серверы размещены на мощных выделенных машинах, оснащённых процессорами нового поколения. Мы стремимся обеспечить максимально комфортную и честную игру, используя строгую фильтрацию аккаунтов, AntiCheat и уникальных авторских плагинов. Проект успешно работает с 28 апреля 2023 года.</p>
+      </div>
+      <div class="col-md-4">
+        <h5 class="footer-title">Ссылки</h5>
+        <ul class="list-unstyled">
+          <li><a href="https://discord.com/invite/VuuTA2QQQC/" class="text-white text-decoration-none">Discord</a></li>
+          <li><a href="{% url 'rules' %}" class="text-white text-decoration-none">Правила сервера</a></li>
+          <li><a href="{% url 'show_faq' 'use_donate' %}" class="text-white text-decoration-none">Как пользоваться донатом</a></li>
+          <li><a href="{% url 'show_faq' 'replenish' %}" class="text-white text-decoration-none">Как пополнить баланс</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 class="footer-title">Контакты</h5>
+        <ul class="list-unstyled">
+          <li>Mail: support@praniksl.com</li>
+          <li>Telegram: ui_2506</li>
+          <li>Discord: ui_2506</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-left mt-3 copy_right"></div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navbar = document.querySelector('.navbar');
+    const copy_right = document.querySelector('.copy_right');
+
+    copy_right.innerHTML = `\u00A9 2025 - ${new Date().getFullYear()} <b>praniksl.com</b>`;
+
+    let lastScrollTop = 0;
+
+    window.addEventListener('scroll', function () {
+      const scrollTop = window.scrollY;
+
+      if (scrollTop > 10) {
+        navbar.classList.add('navbar-scrolled');
+        navbar.classList.remove('navbar-none-scrolled');
+      } else {
+        navbar.classList.add('navbar-none-scrolled');
+        navbar.classList.remove('navbar-scrolled');
+      }
+
+      lastScrollTop = scrollTop;
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация | Pranik{% endblock %}
+
+{% block content %}
+<style>
+  .offer-text {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 1rem;
+  }
+
+  .offer-text a {
+    color: #aaa;
+    text-decoration: underline;
+  }
+
+  .offer-text a:hover {
+    color: var(--red-color);
+  }
+</style>
+
+<div class="p-4 rounded shadow-sm text-white">
+    <h2 class="mb-4 text-center fw-bold">Регистрация/Вход</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="p-3 border rounded bg-gradient text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Зарегистрируйтесь на сайте через Steam</h5>
+                    <p class="card-text">Не бойся, это безопасно</p>
+                    <a class="btn btn-success fw-bold" href="{% url 'social:begin' 'steam' %}">Войти через Steam</a>
+                    <p class="offer-text">Входя в аккаунт, вы соглашаетесь c <a href="{% url 'rule_type' 'privacy' %}">политикой конфидициальности</a></p>
+
+                    <a class="nav-link mt-2 fw-bold text-warning" id="sceary">Все равно боишься?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let textIndex = 0;
+    
+    const messages = [
+        "А ты не бойся!",
+        "Пора победить страхи! >:3",
+        "Ну я серьезно... Мы получаем только ваш SteamId",
+        "ДА ЖМИ УЖЕ НА КНОПКУ!",
+        "Я обиделся. >:("
+    ];
+
+    function changeText() {
+        const link = document.getElementById('sceary');
+        if (textIndex < messages.length) {
+            link.innerHTML = messages[textIndex];
+            textIndex++;
+        }
+    }
+
+    window.onload = () => {
+        const link = document.getElementById('sceary');
+        link.addEventListener('click', changeText);
+    };
+</script>
+
+{% endblock %}

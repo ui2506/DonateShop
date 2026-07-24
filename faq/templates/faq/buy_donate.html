@@ -1,0 +1,16 @@
+{% extends "faq.html" %}
+
+{% block faq_content %}
+<h2 class="faq-question-title">Как купить донат?</h2>
+<p>Чтобы купить донат, перейдите в раздел 
+   <a href="{% url 'shop_server_list' %}">магазина донатов</a>.</p>
+<p>Выберите сервер, выберите донат.</p>
+<p>После списание баланса донат активируется автоматически.</p>
+{% endblock %}
+
+<style>
+.faq-question-title {
+  color: #ff7777;
+  margin-bottom: 1rem;
+}
+</style>

@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}Покупка | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+  :root{
+    --panel: rgba(255,255,255,0.06);
+    --panel2: rgba(255,255,255,0.04);
+    --stroke: rgba(255,255,255,0.10);
+    --stroke2: rgba(255,255,255,0.16);
+    --text-dim: rgba(255,255,255,0.72);
+  }
+
+  .purchase-page{
+    padding: 56px 0 20px;
+  }
+
+  .purchase-shell{
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .purchase-card{
+    background: linear-gradient(180deg, rgba(17,24,39,0.70), rgba(0,0,0,0.65));
+    border: 1px solid var(--stroke);
+    border-radius: 22px;
+    box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+    overflow: hidden;
+  }
+
+  .purchase-card__inner{
+    padding: 26px;
+  }
+
+  .info-bar{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--stroke);
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+  }
+
+  .info-bar a{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: transform .15s ease, border-color .15s ease, background-color .15s ease;
+    color: rgba(255,255,255,0.86);
+  }
+
+  .info-bar a:hover{
+    transform: translateY(-1px);
+    background: var(--panel2);
+    border-color: var(--stroke2);
+  }
+
+  .faq-link-icon{
+    width: 16px;
+    height: 16px;
+    opacity: .9;
+  }
+
+  /* Main layout */
+  .purchase-grid{
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px){
+    .purchase-grid{ grid-template-columns: 1fr; }
+  }
+
+  .purchase-title{
+    font-size: 26px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    letter-spacing: 0.2px;
+  }
+
+  .purchase-sub{
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .purchase-desc{
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid var(--stroke);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .purchase-desc ul{
+    margin: 0;
+    padding-left: 18px;
+  }
+  .purchase-desc li{
+    color: rgba(255,255,255,0.86);
+    margin: 6px 0;
+  }
+
+  .purchase-summary{
+    border: 1px solid var(--stroke);
+    background: rgba(0,0,0,0.25);
+    border-radius: 18px;
+    padding: 18px;
+    position: sticky;
+    top: 86px;
+  }
+
+  @media (max-width: 860px){
+    .purchase-summary{ position: static; top: auto; }
+  }
+
+  .summary-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.12);
+  }
+  .summary-row:last-child{ border-bottom: none; padding-bottom: 0; }
+
+  .summary-key{
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  .summary-val{
+    font-weight: 800;
+    letter-spacing: .2px;
+  }
+
+  .price-big{
+    font-size: 26px;
+    font-weight: 900;
+  }
+
+  .btn-buy{
+    width: 100%;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: var(--red-color);
+    color: #fff;
+    font-weight: 800;
+    transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+  }
+
+  .btn-buy:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 0 26px rgba(231,76,60,0.35);
+    background: #ff5a4a;
+  }
+
+  .fineprint{
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+
+  .fineprint a {
+    color: #aaa;
+    text-decoration: underline;
+  }
+
+  .fineprint a:hover {
+    color: var(--red-color);
+  }
+
+  .mini-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--stroke);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.78);
+    font-size: 12px;
+    font-weight: 700;
+  }
+</style>
+
+<section class="purchase-page">
+  <div class="purchase-shell">
+
+    <div class="purchase-card">
+
+      <div class="info-bar">
+        <a href="{% url 'rules' %}" target="_blank" rel="noopener">
+          <span>Правила</span>
+          <svg class="faq-link-icon" viewBox="0 0 122.6 122.88" aria-hidden="true">
+            <path d="M110.6,72.58c0-3.19,2.59-5.78,5.78-5.78c3.19,0,5.78,2.59,5.78,5.78v33.19c0,4.71-1.92,8.99-5.02,12.09
+            c-3.1,3.1-7.38,5.02-12.09,5.02H17.11c-4.71,0-8.99-1.92-12.09-5.02c-3.1-3.1-5.02-7.38-5.02-12.09V17.19
+            C0,12.48,1.92,8.2,5.02,5.1C8.12,2,12.4,0.08,17.11,0.08h32.98c3.19,0,5.78,2.59,5.78,5.78c0,3.19-2.59,5.78-5.78,5.78
+            H17.11c-1.52,0-2.9,0.63-3.91,1.63c-1.01,1.01-1.63,2.39-1.63,3.91v88.58c0,1.52,0.63,2.9,1.63,3.91
+            c1.01,1.01,2.39,1.63,3.91,1.63h87.95c1.52,0,2.9-0.63,3.91-1.63s1.63-2.39,1.63-3.91V72.58z
+            M112.42,17.46L54.01,76.6c-2.23,2.27-5.89,2.3-8.16,0.07c-2.27-2.23-2.3-5.89-0.07-8.16l56.16-56.87H78.56
+            c-3.19,0-5.78-2.59-5.78-5.78c0-3.19,2.59-5.78,5.78-5.78h26.5c5.12,0,11.72-0.87,15.65,3.1
+            c2.48,2.51,1.93,22.52,1.61,34.11c-0.08,3-0.15,5.29-0.15,6.93c0,3.19-2.59,5.78-5.78,5.78
+            c-3.19,0-5.78-2.59-5.78-5.78c0-0.31,0.08-3.32,0.19-7.24
+            C110.96,30.94,111.93,22.94,112.42,17.46z" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a href="{% url 'show_faq' 'use_donate' %}" target="_blank" rel="noopener">
+          <span>Как пользоваться донатом</span>
+          <svg class="faq-link-icon" viewBox="0 0 122.6 122.88" aria-hidden="true">
+            <path d="M110.6,72.58c0-3.19,2.59-5.78,5.78-5.78c3.19,0,5.78,2.59,5.78,5.78v33.19c0,4.71-1.92,8.99-5.02,12.09
+            c-3.1,3.1-7.38,5.02-12.09,5.02H17.11c-4.71,0-8.99-1.92-12.09-5.02c-3.1-3.1-5.02-7.38-5.02-12.09V17.19
+            C0,12.48,1.92,8.2,5.02,5.1C8.12,2,12.4,0.08,17.11,0.08h32.98c3.19,0,5.78,2.59,5.78,5.78c0,3.19-2.59,5.78-5.78,5.78
+            H17.11c-1.52,0-2.9,0.63-3.91,1.63c-1.01,1.01-1.63,2.39-1.63,3.91v88.58c0,1.52,0.63,2.9,1.63,3.91
+            c1.01,1.01,2.39,1.63,3.91,1.63h87.95c1.52,0,2.9-0.63,3.91-1.63s1.63-2.39,1.63-3.91V72.58z
+            M112.42,17.46L54.01,76.6c-2.23,2.27-5.89,2.3-8.16,0.07c-2.27-2.23-2.3-5.89-0.07-8.16l56.16-56.87H78.56
+            c-3.19,0-5.78-2.59-5.78-5.78c0-3.19,2.59-5.78,5.78-5.78h26.5c5.12,0,11.72-0.87,15.65,3.1
+            c2.48,2.51,1.93,22.52,1.61,34.11c-0.08,3-0.15,5.29-0.15,6.93c0,3.19-2.59,5.78-5.78,5.78
+            c-3.19,0-5.78-2.59-5.78-5.78c0-0.31,0.08-3.32,0.19-7.24
+            C110.96,30.94,111.93,22.94,112.42,17.46z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="purchase-card__inner">
+        <div class="purchase-grid">
+
+          <div>
+            <div class="mini-badge">🛒 Покупка привилегии</div>
+
+            <h1 class="purchase-title mt-3">{{ donate.title }}</h1>
+            <div class="purchase-sub">
+              Проверь срок и стоимость перед оплатой. Доступ применится по правилам проекта.
+            </div>
+
+            <div class="purchase-desc">
+              {{ donate.description|safe }}
+            </div>
+          </div>
+
+          <aside class="purchase-summary">
+            <div class="summary-row">
+              <div class="summary-key">Стоимость</div>
+              <div class="summary-val"><span class="price-big">{{ price }}</span> ₽</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-key">Срок</div>
+              <div class="summary-val">{{ days }} дней</div>
+            </div>
+
+            <form method="POST" class="mt-2">
+              {% csrf_token %}
+              <button type="submit" class="btn-buy">Купить</button>
+            </form>
+
+            <div class="fineprint">
+              Нажимая «Купить», вы соглашаетесь с <a href="{% url 'rule_type' 'offer' %}" target="_blank">офертой</a> и правилами. Если у вас уже есть активная привилегия — она будет продлена.
+            </div>
+          </aside>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

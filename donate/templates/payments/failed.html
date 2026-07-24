@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка | Pranik{% endblock %}
+
+{% block content %}
+<div class="p-4 rounded shadow-sm text-white">
+    <h2 class="mb-4 text-center fw-bold">Ошибка</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="p-3 border rounded bg-gradient text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Ошибка</h5>
+                    <p class="card-text">Оплата не прошла</p>
+                    <a class="btn btn-success fw-bold" href="{% url 'home' %}">Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

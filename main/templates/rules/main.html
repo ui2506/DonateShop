@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title %}Правила | Pranik{% endblock %}
+
+{% block content %}
+
+<style>
+    .box{
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+    }
+</style>
+
+<div class="p-4 rounded shadow-lg text-white">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm border-0 rounded-4 box">
+                <div class="card-body text-center">
+                    <h4 class="card-title fw-bold text-light">Договор оферты и условия</h4>
+                    <a href="{% url 'rule_type' 'offer' %}" class="btn btn-outline-light w-100 rounded-3 fw-bold">Перейти</a>
+                </div>
+            </div>
+            <div class="card mb-4 shadow-sm border-0 rounded-4 box">
+                <div class="card-body text-center">
+                    <h4 class="card-title fw-bold text-light">Политика конфидициальности</h4>
+                    <a href="{% url 'rule_type' 'privacy' %}" class="btn btn-outline-light w-100 rounded-3 fw-bold">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mb-4 text-center text-uppercase fw-bold">Выберите сервер</h2>
+
+        {% for rule in rules %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm border-0 rounded-4 box">
+                    <div class="card-body text-center">
+                        <h4 class="card-title fw-bold text-light">{{ rule.server.server_name|unitycolor|safe }}</h4>
+                        <p class="text-white-50 mb-3">Выберите нужные правила:</p>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'server_rules' rule.server.server_id %}" class="btn btn-outline-light rounded-3 fw-bold">Правила сервера</a>
+                            <a href="{% url 'donate_rules' rule.server.server_id %}" class="btn btn-outline-light rounded-3 fw-bold">Правила доната</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center text-white">Нет доступных серверов. Подождите немного 😊</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
