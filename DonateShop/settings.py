@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Pranik.wsgi.application'
+WSGI_APPLICATION = 'DonateShop.wsgi.application'
 
 DATABASES = {
     'default': {
