@@ -3,8 +3,6 @@
 > [!WARNING]
 > The frontend of this project is relatively basic, as development was primarily focused on backend functionality. A frontend redesign is recommended for long-term or production use.
 
-# DonateShop
-
 DonateShop is a universal Django-based web platform for selling digital donations across multiple game servers. It is designed to be game-independent, allowing any server or application to integrate through a simple REST API.
 
 The platform includes:
