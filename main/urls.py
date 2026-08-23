@@ -8,7 +8,6 @@ urlpatterns = [
     path('logout/', logout, name="logout"),
     path('profile/', profile, name='profile'),
     path('servers/', server_list, name='server_list'),
-    path('unban/<str:id>/', unban, name='unban'),
 
     path('rules/', rules, name="rules"),
     path('rules/type/<str:type>/', rule_type, name="rule_type"),

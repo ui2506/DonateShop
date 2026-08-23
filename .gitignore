@@ -11,10 +11,9 @@ env/
 
 # Django
 db.sqlite3
-media/
-
-# Static
+default.db
 staticfiles/
+**/*_initial.py
 
 # Logs
 *.log

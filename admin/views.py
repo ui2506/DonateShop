@@ -5,7 +5,7 @@ from django.db.models import Sum
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.utils.timezone import now
-from main.models import Player, PlayerPunishment, PunishmentHistory
+from main.models import Player
 from donate.models import Transaction, Purchase, Donate, Present
 
 def user_list(request: HttpRequest) -> HttpResponse:
@@ -74,7 +74,6 @@ def user_profile(request, user_id):
     
     purchases = Purchase.objects.filter(player=player, is_hidden=False).all()
     transactions = Transaction.objects.filter(user=player).order_by('-created_at')[:10]
-    punishments = PlayerPunishment.objects.using('scpsl').filter(target_id=f"{player.user_id}@steam").order_by('-created_at')[:10]
 
     if request.method == "POST":
         post_actions = {
@@ -96,19 +95,6 @@ def user_profile(request, user_id):
             action = post_actions[action_key]
 
             match action:
-                case "unban":
-                    ban_id = request.POST.get("unban_id")
-                    ban = PlayerPunishment.objects.using('scpsl').filter(id=ban_id).first()
-
-                    if not ban:
-                        messages.error(request, "Блокировка не найдена!")
-                        return redirect('admin_user_profile', player.user_id)
-                    
-                    ban.is_revoked = True
-                    ban.save()
-
-                    messages.success(request, "Блокировка успешна удалена!")
-
                 case "deactivate":
                     donate_id = request.POST.get("deactivate_donate_id")
                     reason = request.POST.get("deactivate_donate_reason")
@@ -198,8 +184,7 @@ def user_profile(request, user_id):
         'player': player, 
         'donates': purchases, 
         'transactions': transactions,
-        'bans': punishments
-        })
+    })
 
 def give_present (request: HttpRequest) -> HttpResponse:
     if not request.user.is_superuser:

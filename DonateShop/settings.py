@@ -63,30 +63,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'DonateShop.wsgi.application'
 
 # Change to your data dase
+
+# DO NOT USE SQLLITE3 IN PRODUCTION!
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_web',
-        'USER': 'admin',
-        'PASSWORD': '@@@',
-        'HOST': '45.136.204.116',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'default.db',
     },
-    'scpsl': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test_scpsl',
-        'USER': 'admin',
-        'PASSWORD': '@@@',
-        'HOST': '45.136.204.116',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
-    }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'website',
+#         'USER': 'website_admin',
+#         'PASSWORD': 'password',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -138,7 +136,7 @@ ANTILOPAY_FAIL_URL = ""
 ANTILOPAY_SECRET_ID = ""
 ANTILOPAY_SECRET_KEY = ""
 
-SOCIAL_AUTH_STEAM_API_KEY = '' # CHANGE TO YOUR STEAM API KEY
+SOCIAL_AUTH_STEAM_API_KEY = '622A802C0389AB64289C6F6CCE1722D2' # CHANGE TO YOUR STEAM API KEY
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'

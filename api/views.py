@@ -5,10 +5,7 @@ from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from DonateShop.utils import get_client_ip
-from main.models import Ban, Server
-from django.db.models import Q
 import DonateShop.settings as settings
-import requests
 import json
 
 @api_view(['POST'])
@@ -105,101 +102,3 @@ def donators_api_give_days(request):
         'status': 'ok',
         'count': donators.count()
     })
-
-@api_view(['POST'])
-def ban(request):
-    ip = get_client_ip(request)
-    api_key = request.headers.get('X-Api-Key')
-
-    if not (api_key in settings.API_KEY and ip in settings.API_IP):
-        return Response({'error': 'permission denied'}, status=403)
-
-    data = request.data
-    required_fields = ['duration', 'target_id', 'target_ip', 'issuer_id', 'reason', 'server_name']
-    if not all(field in data for field in required_fields):
-        return Response({'error': 'Missing required fields'}, status=400)
-
-    try:
-        duration = int(data['duration'])
-    except (ValueError, TypeError):
-        return Response({'error': 'Invalid duration'}, status=400)
-
-    expires_at = timezone.now() + timedelta(seconds=duration)
-
-    server = Server.objects.filter(name=data['server_name']).first()
-    if not server:
-        return Response({'error': 'Server not found'}, status=404)
-
-    Ban.objects.create(
-        target_id=data['target_id'],
-        target_ip=data['target_ip'],
-        issuer_id=data['issuer_id'],
-        server=server,
-        reason=data['reason'],
-        expires_at=expires_at
-    )
-
-    return Response({'status': 'ok'})
-
-@api_view(['POST'])
-def unban(request):
-    ip = get_client_ip(request)
-    api_key = request.headers.get('X-Api-Key')
-
-    if not (api_key in settings.API_KEY and ip in settings.API_IP):
-        return Response({'error': 'permission denied'}, status=403)
-
-    user_id = request.data.get('user_id')
-    user_ip = request.data.get('user_ip')
-
-    ban = Ban.objects.filter(Q(target_id=user_id) | Q(target_ip=user_ip))
-
-    if not ban:
-        return Response({
-            'status': 'not-found',
-        }, status=404)
-    
-    ban.delete()
-    
-    return Response({
-        'status': 'ok',
-    })
-
-@api_view(['POST'])
-def check_ban(request):
-    ip = get_client_ip(request)
-    api_key = request.headers.get('X-Api-Key')
-
-    if api_key not in settings.API_KEY or ip not in settings.API_IP:
-        return Response({'error': 'permission denied'}, status=403)
-
-    user_id = request.data.get('user_id')
-    user_ip = request.data.get('user_ip')
-
-    ban = Ban.objects.filter(
-        Q(target_id=user_id) | Q(target_ip=user_ip),
-        expires_at__gt=timezone.now(),
-        is_bought=False
-    ).last()
-
-    if ban:
-        return Response({
-            'status': 'ok',
-            'is_banned': True,
-            'expires_at': ban.expires_at,
-            'reason': ban.reason
-        })
-
-    return Response({
-        'status': 'ok',
-        'is_banned': False
-    })
-
-def proxy_server_data(request, scpsl_id):
-    api_url = f"https://api.scplist.kr/api/servers/{scpsl_id}"
-    
-    try:
-        response = requests.get(api_url, timeout=5)
-        return JsonResponse(response.json(), safe=False)
-    except requests.exceptions.RequestException as e:
-        return JsonResponse({'error': f'Ошибка API: {str(e)}'}, status=500)

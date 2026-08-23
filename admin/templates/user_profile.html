@@ -1,39 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Профиль пользователя | Pranik{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'styles/admin_user_profile.css' %}"> 
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'scripts/admin_user_profile.js' %}" defer></script>
+{% endblock %}
+
 {% block content %}
-
-<style>
-  body { background: #0f0f14; color: #eee; }
-  .section-title { text-align:center; font-weight:bold; color:#ff3c3c; margin-bottom:1.5rem; }
-  .profile-header { text-align:center; margin-bottom:2.5rem; }
-  .profile-header img { border:3px solid #ff3c3c; box-shadow:0 0 15px rgba(255,60,60,0.5); }
-  .profile-card, .card-profile { background: rgba(255,255,255,0.05); border:1px solid #333; border-radius:1rem; padding:1.5rem; box-shadow:0 0 10px rgba(0,0,0,0.4); }
-  .donate-card, .transaction-card, .ban-card { background: rgba(255,255,255,0.03); border:1px solid #333; border-radius:0.8rem; padding:1rem; margin-bottom:1rem; transition: transform 0.15s; }
-  .donate-card:hover, .transaction-card:hover, .ban-card:hover { transform: scale(1.02); }
-  .badge { padding:0.3rem 0.6rem; border-radius:0.5rem; font-size:0.9rem; }
-  .badge-success { background:#2ecc71; color:#fff; }
-  .badge-danger { background:#e74c3c; color:#fff; }
-  .badge-warning { background:#f1c40f; color:#000; }
-  .btn-red { background:#e74c3c; color:#fff; border:none; padding:0.5rem 1rem; border-radius:0.6rem; width:100%; font-weight:bold; margin-top:0.5rem; }
-  .btn-red:hover { background:#c0392b; }
-
-  /* Модалка деактивации */
-  @keyframes pop-in { from { transform: scale(0.93); opacity:0.3; } to { transform: scale(1); opacity:1; } }
-  .deactivate-modal-backdrop { position: fixed; z-index:1050; left:0; top:0; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); }
-  .deactivate-modal-window { background:#fff0f0; border-radius:1.2rem; box-shadow:0 0 24px #f44b4b50; min-width:340px; max-width:94vw; padding:1.5rem 1.3rem 1.1rem 1.3rem; border:2px solid #ff5555; animation:pop-in 0.13s cubic-bezier(0.7,1.2,0.5,1.1); }
-  .deactivate-modal-header { display:flex; justify-content:space-between; font-size:1.25rem; margin-bottom:0.7rem; }
-  .deactivate-modal-title { color:#ff2020; font-weight:bold; }
-  .deactivate-modal-close { cursor:pointer; font-size:1.4rem; color:#d66; transition:color 0.2s; }
-  .deactivate-modal-body { color:#c20000; font-size:1.06rem; margin-bottom:1.1rem; }
-  .deactivate-modal-actions { display:flex; justify-content:flex-end; gap:0.6rem; }
-  .input-reason {
-    color: #000 !important;
-    background-color: #fff;
-  }
-</style>
-
 <div class="container py-5">
 
   <!-- ПРОФИЛЬ -->
@@ -225,71 +203,4 @@
     <p class="text-center">Блокировок нет.</p>
   {% endif %}
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const deactivateButtons = document.querySelectorAll(".deactivate-btn");
-
-    deactivateButtons.forEach(btn => {
-        btn.addEventListener("click", function () {
-
-            const form = btn.closest(".deactivate-form");
-            if (!form) return;
-
-            const reasonInput = form.querySelector(".deactivate_donate_reason");
-
-            const modal = document.createElement("div");
-            modal.className = "deactivate-modal-backdrop";
-            modal.innerHTML = `
-                <div class="deactivate-modal-window">
-                    <div class="deactivate-modal-header">
-                        <span class="deactivate-modal-title">Укажите причину</span>
-                        <span class="deactivate-modal-close" id="modalCloseBtn">&times;</span>
-                    </div>
-
-                    <div class="deactivate-modal-body">
-                        <label>
-                          Причина деактивации:
-                          <input id="deactivateReasonInput"
-                                 type="text"
-                                 placeholder="Введите причину..."
-                                 class="input-reason">
-                        </label>
-                    </div>
-
-                    <div class="deactivate-modal-actions">
-                        <button id="cancelModalBtn" class="btn btn-outline-dark">Отмена</button>
-                        <button id="continueModalBtn" class="btn-red">Подтвердить</button>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-
-            const close = () => { document.body.removeChild(modal); };
-
-            modal.querySelector("#modalCloseBtn").onclick = close;
-            modal.querySelector("#cancelModalBtn").onclick = close;
-            modal.addEventListener("mousedown", (e) => {
-                if (e.target === modal) close();
-            });
-            window.addEventListener("keydown", function escFunc(e){
-                if (e.key === "Escape") {
-                    close();
-                    window.removeEventListener("keydown", escFunc);
-                }
-            });
-
-            modal.querySelector("#continueModalBtn").onclick = () => {
-                const reason = document.getElementById("deactivateReasonInput").value.trim();
-                reasonInput.value = reason === "" ? "No reason" : reason;
-
-                close();
-                form.submit();
-            };
-        });
-    });
-});
-</script>
-
 {% endblock %}

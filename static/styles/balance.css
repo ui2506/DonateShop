@@ -1,0 +1,238 @@
+.balance-page { padding: 56px 0 30px; }
+.balance-shell { max-width: 1050px; margin: 0 auto; padding: 0 16px; }
+
+.balance-card {
+  background: linear-gradient(180deg,rgba(17,24,39,.72),rgba(0,0,0,.68));
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 22px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  overflow: hidden;
+}
+
+.balance-card__inner { padding: 26px; }
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 350px;
+  gap: 22px;
+  align-items: start;
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.78);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.balance-title { margin: 14px 0 6px; font-size: 28px; font-weight: 900; }
+.balance-subtitle { margin: 0; color: rgba(255,255,255,.66); font-size: 14px; }
+
+.current-balance {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px;
+  background: rgba(255,255,255,.035);
+}
+
+.current-balance__label { color: rgba(255,255,255,.66); font-size: 13px; }
+.current-balance__value { font-size: 36px; line-height: 1.15; font-weight: 900; }
+
+.history-section { margin-top: 22px; }
+.section-heading { margin-bottom: 13px; font-size: 18px; font-weight: 800; }
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  background: rgba(255,255,255,.03);
+  transition: .15s;
+}
+
+.transaction-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.045);
+}
+
+.transaction-amount { min-width: 95px; font-size: 16px; font-weight: 900; white-space: nowrap; }
+.transaction-amount--positive { color: var(--green-color); }
+.transaction-amount--negative { color: #ff9f43; }
+.transaction-info { min-width: 0; }
+.transaction-reason { overflow: hidden; color: rgba(255,255,255,.88); text-overflow: ellipsis; white-space: nowrap; }
+.transaction-date { margin-top: 3px; color: rgba(255,255,255,.45); font-size: 12px; }
+.transaction-status { color: rgba(255,255,255,.45); font-size: 12px; white-space: nowrap; }
+
+.empty-history {
+  padding: 24px;
+  border: 1px dashed rgba(255,255,255,.1);
+  border-radius: 16px;
+  color: rgba(255,255,255,.66);
+  text-align: center;
+}
+
+.payment-panel {
+  position: sticky;
+  top: 86px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 18px;
+  background: rgba(0,0,0,.28);
+}
+
+.payment-title { margin: 0 0 5px; font-size: 19px; font-weight: 900; }
+.payment-description { margin-bottom: 16px; color: rgba(255,255,255,.66); font-size: 13px; line-height: 1.45; }
+.amount-label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 700; }
+
+.amount-field {
+  width: 100%;
+  height: 52px;
+  padding: 0 15px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 14px;
+  outline: none;
+  background: rgba(255,255,255,.055);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.amount-field:focus {
+  border-color: var(--red-color);
+  box-shadow: 0 0 0 4px rgba(231,76,60,.13);
+}
+
+.amount-field::-webkit-outer-spin-button,
+.amount-field::-webkit-inner-spin-button { appearance: none; margin: 0; }
+
+.amount-field[type=number] { -moz-appearance: textfield; }
+
+.payment-methods-title { margin: 18px 0 9px; font-size: 13px; font-weight: 700; }
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-method { position: relative; }
+.payment-method input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.payment-method label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 15px;
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+  transition: .15s;
+}
+
+.payment-method label:hover { transform: translateY(-1px); background: rgba(255,255,255,.045); }
+.payment-method input:checked + label {
+  border-color: var(--red-color);
+  background: rgba(231,76,60,.09);
+  box-shadow: 0 0 0 3px rgba(231,76,60,.1);
+}
+
+.payment-method__icon {
+  display: flex;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 11px;
+  background: rgba(0,0,0,.28);
+}
+
+.payment-method__icon img { width: 30px; height: 30px; object-fit: contain; }
+.payment-method__content { min-width: 0; flex: 1; }
+.payment-method__name { font-size: 14px; font-weight: 800; }
+.payment-method__hint { margin-top: 2px; color: rgba(255,255,255,.48); font-size: 11px; }
+
+.payment-method__check {
+  display: flex;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+  color: transparent;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.payment-method input:checked + label .payment-method__check {
+  border-color: var(--red-color);
+  background: var(--red-color);
+  color: #fff;
+}
+
+.payment-submit {
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px 16px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  background: var(--red-color);
+  color: #fff;
+  font-weight: 900;
+}
+
+.payment-submit:hover { background: #ff5a4a; box-shadow: 0 0 26px rgba(231,76,60,.35); }
+.payment-submit:disabled { opacity: .65; cursor: wait; }
+.fineprint { margin-top: 11px; color: rgba(255,255,255,.48); font-size: 11px; line-height: 1.45; }
+.fineprint a { color: #aaa; text-decoration: underline; }
+.fineprint a:hover { color: var(--red-color); }
+
+@media (max-width: 860px) {
+  .balance-page { padding-top: 30px; }
+  .balance-grid { grid-template-columns: 1fr; }
+  .payment-panel { position: static; grid-row: 1; }
+}
+
+@media (max-width: 560px) {
+  .balance-card__inner { padding: 16px; }
+  .balance-title { font-size: 24px; }
+  .current-balance__value { font-size: 31px; }
+  .transaction-item { grid-template-columns: 1fr; gap: 6px; }
+  .transaction-reason { white-space: normal; }
+  .transaction-status { display: none; }
+}

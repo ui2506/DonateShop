@@ -1,0 +1,19 @@
+.shop-server-list {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.shop-server-card {
+  padding: 24px;
+  margin-bottom: 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid #222;
+  border-radius: 1rem;
+  transition: .2s;
+}
+
+.shop-server-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.2);
+}

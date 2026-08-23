@@ -1,0 +1,109 @@
+.rules-content {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 0 20px;
+  }
+    
+.rules-content h2, 
+.rules-content h3, 
+.rules-content h4, 
+.rules-content p, 
+.rules-content li, 
+.rules-content span,
+.rules-content strong {
+  color: #fff;
+}
+
+.rules-content h2 {
+  color: #d9534f !important;
+  border-bottom: 2px solid #d9534f;
+  padding-bottom: 8px;
+  margin-top: 40px;
+}
+    
+.rules-content h3 {
+  color: #e2e8f0 !important;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+    
+.rules-content h4 {
+  color: #cbd5e1 !important;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+    
+.rules-content hr {
+  border: 0;
+  height: 1px;
+  background: #374151;
+  margin: 25px 0;
+}
+    
+.rules-content ul {
+  padding-left: 20px;
+}
+    
+.rules-content li {
+  margin-bottom: 14px;
+  color: #e2e8f0;
+}
+
+.rules-content .important-box {
+  background-color: #1e1b4b;
+  border-left: 4px solid #f59e0b;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+}
+.rules-content .important-box,
+.rules-content .important-box strong {
+  color: #fef3c7 !important;
+}
+    
+.rules-content .punishment {
+  background-color: #7f1d1d;
+  color: #fca5a5 !important;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 6px;
+  border: 1px solid #b91c1c;
+  font-size: 0.9em;
+}
+    
+.rules-content .badge-info {
+  font-size: 0.85em;
+  color: #9ca3af !important;
+  font-style: italic;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  /* display: block; */
+}
+
+.rules-content .rules-alert-danger {
+  background-color: #451a03;
+  border-left: 4px solid #ef4444;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.rules-content .rules-alert-danger,
+.rules-content .rules-alert-danger strong {
+  color: #fca5a5 !important;
+}
+    
+.rules-content .note-box {
+  background-color: #1f2937;
+  border-left: 4px solid #9ca3af;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+}
+.rules-content .note-box,
+.rules-content .note-box strong {
+  color: #e5e7eb !important;
+}

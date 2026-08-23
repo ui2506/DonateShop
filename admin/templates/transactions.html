@@ -1,46 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Транзакций | Pranik{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'styles/admin_transactions.css' %}"> 
+{% endblock %}
+
 {% block content %}
-
-<style>
-    .op{
-        background-color: rgba(0, 0, 0, 0);
-    }
-
-    .box {
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-        border-radius: 12px;
-        padding: 20px;
-    }
-
-    .transaction-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .transaction-list li {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-
-    .text-success1 {
-        color: #00ff3c;
-    }
-
-    .text-danger1 {
-        color: #ff0019;
-    }
-
-    .text-waiting{
-        color: darkorange;
-    }
-</style>
-
 <div class="box text-white mt-4">
         <h2 class="mb-4 text-light">История транзакций</h2>
 
@@ -54,12 +21,12 @@
                 {% for transaction in transactions %}
                     <li>
                         {% if transaction.type == 'replenishment' %}
-                            <span class="fw-bold text-success1">+ {{ transaction.amount }} ₽</span><br>
+                            <span class="fw-bold" style="color: var(--green-color);">+ {{ transaction.amount }} ₽</span><br>
                             <span class="text-light">
                                 <a href="{% url 'admin_user_profile' transaction.user.user_id|default:'unknown' %}">{{ transaction.user.user_id }}</a> - {{ transaction.reason }}
                             </span>
                         {% else %}
-                            <span class="fw-bold text-waiting">- {{ transaction.amount }} ₽</span><br>
+                            <span class="fw-bold" style="color: var(--orange-color);">- {{ transaction.amount }} ₽</span><br>
                             <span class="text-light">
                                 <a href="{% url 'admin_user_profile' transaction.user.user_id|default:'unknown' %}">{{ transaction.user.user_id }}</a> - {{ transaction.reason }}
                             </span>

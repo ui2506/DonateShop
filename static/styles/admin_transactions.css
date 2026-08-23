@@ -1,0 +1,22 @@
+.op{
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.box {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+}
+
+.transaction-list li {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}

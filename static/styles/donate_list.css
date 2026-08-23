@@ -1,0 +1,27 @@
+.donate-list-page { padding: 50px 0; }
+
+.donate-list-card {
+  height: 100%;
+  padding: 24px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid #333;
+  border-radius: 1rem;
+  transition: .2s;
+}
+
+.donate-list-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,.2);
+}
+
+.donate-price {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.donate-prefix {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #fff;
+  border-radius: .6rem;
+}

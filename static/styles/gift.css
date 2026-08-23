@@ -1,0 +1,17 @@
+.gift-page {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.gift-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1rem;
+  padding: 24px;
+}
+
+.gift-comment {
+  min-height: 120px;
+  resize: vertical;
+}

@@ -15,9 +15,6 @@ def home(request):
 
     donates = list(Donate.objects.filter(is_buyable=True).order_by('-count')[:3])
 
-    top_players = PlayerXP.objects.using('scpsl').order_by('-lvl').values('nickname', 'lvl')[:10]
-    top_time = PlayerXP.objects.using('scpsl').order_by('-total_seconds').values('nickname', 'total_seconds')[:10]
-
     if len(donates) >= 2:
         donates[0], donates[1] = donates[1], donates[0]
 
@@ -26,8 +23,6 @@ def home(request):
         'url': request.resolver_match.url_name,
         'rich_users': rich_users,
         'donates': donates,
-        'top_players': top_players,
-        'top_time': top_time
     })
 
 def login(request):
@@ -47,12 +42,9 @@ def profile(request):
     if not user.is_authenticated:
         return redirect("login")
     
-    ip = get_client_ip(request)
-
     purchases = Purchase.objects.filter(player=user, is_hidden=False).all()
     transactions = Transaction.objects.filter(user=user).order_by('-created_at')[:10]
     presents = Present.objects.filter(recipient=user, is_used=False).all()
-    punishments = PlayerPunishment.objects.using('scpsl').filter(Q(target_id=f"{user.user_id}@steam") | Q(target_id=ip)).order_by('-created_at')[:10]
 
     if not user.last_update or now() - user.last_update > timedelta(days=1):
         user.update()
@@ -117,55 +109,14 @@ def profile(request):
         'donates': purchases, 
         'transactions': transactions,
         'presents': presents,
-        'punishments': punishments
-        })
-
-def unban(request, id):
-    user = request.user
-
-    if not user.is_authenticated:
-        messages.warning(request, 'С начало войди в аккаунт ^^')
-        return redirect('login')
-
-    punishments = PlayerPunishment.objects.using('scpsl').get(id=id)
-
-    if not punishments:
-        messages.error(request, 'Блокировка не найдена!')
-        return redirect('profile')
-    
-    if punishments.target_id != f"{user.user_id}@steam" and punishments.target_id != get_client_ip(request):
-        messages.warning(request, f'Хммм, мне кажется это не твой бан.')
-        return redirect('profile')
-    
-    if not punishments.is_active() or punishments.is_revoked:
-        messages.warning(request, 'Уже можно не платить. Срок наказания истек, или блокировка снята')
-        return redirect('profile')
-    
-    price = punishments.price()
-
-    if user.balance < price:
-        messages.warning(request, 'У вас немного не хватает деняг... :3')
-        return redirect('balance')
-    
-    punishments.is_revoked = True
-    punishments.save()
-
-    PunishmentHistory.objects.using('scpsl').create(punishment_id=punishments.id, action="revoked", issuer_id="Web site", reason="Покупка снятие ограничений")
-
-    user.balance -= price
-    user.save()
-
-    Transaction.objects.create(user=user, amount=price, type="charge", reason=f"Покупка разбана. Ban id: {id}")
-
-    messages.success(request, 'Вы успешно купили разбан!')
-    return redirect('profile')
+    })
 
 def server_list(request):
     servers = Server.objects.all()
 
     return render(request, 'server_list.html', {
         'servers': servers
-        })
+    })
 
 def rules(request):
     rules = Rule.objects.all()

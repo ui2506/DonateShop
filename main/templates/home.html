@@ -4,119 +4,15 @@
 
 {% block title %}Главная | Pranik{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}"> 
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'scripts/home.js' %}" defer></script>
+{% endblock %}
+
 {% block content %}
-
-<style>
-  .hero { 
-    background: url('{% static "images/image.webp" %}') no-repeat center center / cover; 
-    min-height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-  }
-
-  #privileges {
-    background: linear-gradient(to top, #111827 0%, #000000 100%);
-    color: #ffffff;
-  }
-
-  #buy {
-    background: linear-gradient(to top, #111827 0%, #111827 100%);
-    color: #ffffff;
-  }
-
-  .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
-    color: #ffffff;
-  }
-
-  .btn-red{
-    color: #ffffff;
-    background-color: #e74c3c;
-  }
-
-  .btn-red:hover{
-    color: #e74c3c;
-    background-color: #ffffff;
-  }
-
-  .btn-outline-light:hover{
-    color: #000000;
-  }
-
-  .big-buy-btn {
-    background-color: #e74c3c;
-    color: white;
-    padding: 20px 40px;
-    font-size: 24px;
-    border: none;
-    border-radius: 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: visible;
-    z-index: 1;
-  }
-
-  .big-buy-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px white;
-  }
-
-  .emoji-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-
-  .emoji-button {
-    color: white;
-    padding: 20px 40px;
-    font-size: 24px;
-    border: none;
-    border-radius: 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 2;
-    cursor: pointer;
-  }
-
-  .emoji-button.hovered {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px white;
-  }
-
-  .emoji-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .emoji {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-size: 1.5rem;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: transform 0.7s ease, opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .card { 
-    background-color: #111; 
-    border: 1px solid #222; 
-  }
-
-  .card-premium { 
-    border: 1px solid red; 
-  }
-</style>
-
 <section class="hero">
   <div class="container">
     <h1 class="display-4 fw-bold">Улучшии свой игровой опыт в <br> SCP:SL</h1>
@@ -133,7 +29,7 @@
     <div class="row justify-content-center g-4">
       {% for donate in donates %}
         <div class="col-md-4">
-          <div class="card p-4 h-100 {% if forloop.counter == 2 %} position-relative card-premium {% endif %}">
+          <div class="home-card p-4 h-100 {% if forloop.counter == 2 %} position-relative card-premium {% endif %}">
             {% if forloop.counter == 2 %}
               <span class="badge badge-custom">Популярный выбор</span>
             {% endif %}

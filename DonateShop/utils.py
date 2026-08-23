@@ -2,7 +2,6 @@ import DonateShop.settings as settings
 import requests
 import re
 
-from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 
 def get_steam_user_info(steam_id: str):
@@ -21,9 +20,9 @@ def get_steam_user_info(steam_id: str):
             
             return nickname, avatar, "ok"
         else:
-            return "Пользователь не найден", "", "error"
+            return "User not found!", "", "error"
     else:
-        return f"Ошибка: {response.status_code}", "", "error"
+        return f"Error: {response.status_code}", "", "error"
     
 def clean_nickname(nickname: str) -> str:
     emoji_pattern = re.compile("["
@@ -43,12 +42,7 @@ def clean_nickname(nickname: str) -> str:
     cleaned = re.sub(r"[^a-zA-Zа-яА-Я0-9\s.,!?_-]", "", nickname)
     cleaned = emoji_pattern.sub(r'', cleaned)
     return cleaned.strip()
-    
-def validate_file_size(value):
-    max_size = 250 * 1024 * 1024
-    if value.size > max_size:
-        raise ValidationError(f"Файл слишком большой! Максимальный размер: {max_size / (1024 * 1024)} MB")
-    
+
 def get_client_ip(request: HttpRequest):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     
@@ -56,11 +50,3 @@ def get_client_ip(request: HttpRequest):
         return x_forwarded_for.split(',')[0].strip()
     
     return request.META.get('REMOTE_ADDR')
-
-def send_discord_webhook(url: str, message: str) -> None:
-    data = {
-        'username': 'Webhook Bot',
-        'content': message
-    }
-
-    requests.post(url, json=data)

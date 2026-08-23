@@ -1,0 +1,18 @@
+.purchase-page {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.purchase-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1rem;
+  padding: 24px;
+}
+
+.purchase-price {
+  color: var(--red-color);
+  font-size: 2rem;
+  font-weight: 900;
+}

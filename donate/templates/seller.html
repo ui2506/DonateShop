@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Контакты | Pranik{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'styles/seller.css' %}"> 
+{% endblock %}
+
 {% block content %}
-
-{% load static %}
-
 <div class="text-white p-4 rounded-4 shadow-sm text-center ">
     <h4 class="fw-bold">Сселер</h4>
     <div class="reseller-icons">
@@ -47,91 +49,4 @@
         </button>
     </div>
 </div>
-
-<style>
-    .reseller-icons img {
-        width: 40px;
-        margin: 5px;
-        filter: brightness(1.2);
-    }
-
-    .reseller-box {
-        text-align: center;
-    }
-
-    .social-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 150px;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 16px;
-        text-decoration: none;
-        color: white;
-        border: 2px solid white;
-        background-color: #333;
-        transition: 0.3s;
-    }
-
-    .social-btn:hover {
-        background-color: #444;
-    }
-
-    .box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .box{
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .server-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        margin-bottom: 10px;
-        border: 2px solid #888;
-        border-radius: 8px;
-    }
-
-    .server-box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .server-name {
-        font-weight: bold;
-        color: #bbb;
-    }
-
-    .server-ip {
-        font-family: monospace;
-        color: #888;
-    }
-
-    .copy-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    .copy-btn:hover {
-        transform: scale(1.1);
-    }
-
-    #discord:hover{
-        background-color: #5865F2;
-    }
-
-    #telegram:hover{
-        background-color: #0088cc;
-    }
-</style>
-
 {% endblock %}
