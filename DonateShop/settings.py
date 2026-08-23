@@ -9,8 +9,8 @@ DEBUG = True # DISABLE IN PRODUCTION MODE!
 APPEND_SLASH = True
 SESSION_COOKIE_AGE = 7 * 24 * 60 * 60
 
-ALLOWED_HOSTS = ['127.0.0.1', 'www.praniksl.com'] # CHANGE TO YOUR DOMAIN
-CSRF_TRUSTED_ORIGINS = ['https://www.praniksl.com'] # CHANGE TO YOUR DOMAIN
+ALLOWED_HOSTS = ['127.0.0.1', 'yourdomain.com'] # CHANGE TO YOUR DOMAIN
+CSRF_TRUSTED_ORIGINS = ['https://yourdomain.com'] # CHANGE TO YOUR DOMAIN
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,6 +62,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DonateShop.wsgi.application'
 
+# Change to your data dase
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
