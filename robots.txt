@@ -2,3 +2,9 @@ User-agent: *
 Disallow: /admin/
 Disallow: /api/
 Disallow: /panel/
+Disallow: /payment/
+Disallow: /callback/
+
+Allow: /static/
+
+Sitemap: https://www.praniksl.com/sitemap.xml //Change to YOUR domain
