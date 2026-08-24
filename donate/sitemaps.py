@@ -8,7 +8,9 @@ class ShopSitemap(Sitemap):
 
     def items(self):
         # <str:server_id>
-        return Donate.objects.values_list('server__server_id', flat=True).distinct()
+        return Donate.objects.values_list(
+            'server__server_id', flat=True
+        ).distinct().order_by('server__server_id')
      
     def location(self, item):
         # <str:server_id>

@@ -8,7 +8,9 @@ class MainSitemap(Sitemap):
 
     def items(self):
         # <str:server_id>
-        return Rule.objects.filter(game_rules__isnull=False).exclude(game_rules='').select_related('server')   
+        return Rule.objects.filter(
+            game_rules__isnull=False
+        ).select_related('server').order_by('id')
      
     def location(self, item):
         # rules/game/<str:server_id>/
